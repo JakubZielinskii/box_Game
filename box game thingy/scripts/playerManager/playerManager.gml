@@ -1,11 +1,8 @@
 // Script assets have changed for v2.3.0 see
 // https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
-function playerManager()
-{
-	
-	// is it supposed to look right? or left? (right == true)
-	var isFacingRight = true;
-	
+function MovementAndAnimations()
+{	
+	// silly :3
 	// keys
 	var walkLeftKey = ord("A");
 	var walkRightKey = ord("D");
@@ -14,16 +11,41 @@ function playerManager()
 	
 	
 	// movement
-	var Pspeed = 50;
+	var Pspeed = 150 * delta_time / 1000000;
 	
 	if(keyboard_check(walkLeftKey))
 	{
 		x -= Pspeed;
-		isFacingRight = false;
+		sprite_index = PlayerWalk;
+		image_xscale = -1;
 	}
-	if(keyboard_check(walkRightKey))
+	else if(keyboard_check(walkRightKey))
 	{
 		x += Pspeed;
-		isFacingRight = true;
+		sprite_index = PlayerWalk;
+		image_xscale = 1;
+	}
+	else
+	{
+		sprite_index = PlayerIdle;
+	}
+}
+
+function applyGravity()
+{
+	// stands for gravity
+	var amountToApply = 1;	
+	var grvt = 10;
+	
+	amountToApply *= (delta_time / 1000000 * grvt) + 1;
+	
+	
+	if(place_meeting(x, y + amountToApply, TilesetMaybe))
+	{
+		amountToApply = 0
+	}
+	else
+	{
+		y += amountToApply;
 	}
 }
